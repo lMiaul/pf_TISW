@@ -1,0 +1,63 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# .gitignore — Credit Risk Predictor
+# ─────────────────────────────────────────────────────────────────────────────
+
+# ── Python ────────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# ── Entornos virtuales ────────────────────────────────────────────────────
+.venv/
+venv/
+env/
+.env
+
+# ── Variables de entorno y secretos ──────────────────────────────────────
+.env
+.env.local
+*.secret
+
+# ── Streamlit ─────────────────────────────────────────────────────────────
+.streamlit/secrets.toml
+
+# ── Datos — NO versionar datasets reales (privacidad) ─────────────────────
+data/raw/
+data/processed/
+*.csv
+!data/sample/*.csv          # sólo los datasets de muestra de referencia
+
+# ── Modelos entrenados serializados ───────────────────────────────────────
+*.pkl
+*.joblib
+*.h5
+*.model
+
+# ── Notebooks exploratorios ───────────────────────────────────────────────
+notebooks/
+*.ipynb
+.ipynb_checkpoints/
+
+# ── Reportes y artefactos locales ─────────────────────────────────────────
+reports/
+htmlcov/
+.coverage
+coverage.xml
+*.log
+
+# ── IDEs ──────────────────────────────────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# ── pytest ────────────────────────────────────────────────────────────────
+.pytest_cache/

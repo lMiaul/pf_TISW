@@ -1,0 +1,36 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# Credit Risk Predictor — Dependencias del proyecto
+# Instalar: pip install -r requirements.txt
+# Python >= 3.10 recomendado
+# ─────────────────────────────────────────────────────────────────────────────
+
+# ── App framework ─────────────────────────────────────────────────────────
+streamlit>=1.35.0
+
+# ── Ciencia de datos core ─────────────────────────────────────────────────
+numpy>=1.26.0
+pandas>=2.2.0
+scipy>=1.13.0
+
+# ── Machine Learning ──────────────────────────────────────────────────────
+scikit-learn>=1.5.0
+xgboost>=2.0.0
+lightgbm>=4.3.0
+
+# ── Remuestreo (núcleo del proyecto) ──────────────────────────────────────
+imbalanced-learn>=0.12.0          # SMOTE, SMOTE-ENN, TomekLinks, RUS
+
+# ── Explicabilidad XAI ────────────────────────────────────────────────────
+shap>=0.45.0
+lime>=0.2.0.1
+
+# ── Visualización ─────────────────────────────────────────────────────────
+matplotlib>=3.9.0
+seaborn>=0.13.0
+
+# ── Testing ───────────────────────────────────────────────────────────────
+pytest>=8.2.0
+pytest-cov>=5.0.0
+
+# ── Calidad de código (CI) ────────────────────────────────────────────────
+ruff>=0.4.0                       # linting + formatting
