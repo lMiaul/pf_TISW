@@ -114,7 +114,7 @@ def _tab_class_distribution(y: pd.Series, dist: dict) -> None:
     with col1:
         fig, ax = plt.subplots(figsize=(5, 3.5))
         bars = ax.bar(
-            [labels.get(k, k) for k in counts],
+            [labels.get(k, str(k)) for k in counts],
             counts.values(),
             color=[_PALETTE.get(k, "#666") for k in counts],
             edgecolor="white", linewidth=1.2,

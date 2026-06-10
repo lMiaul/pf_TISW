@@ -127,7 +127,7 @@ def _show_distribution_preview(y_before, y_after, info: dict, preview_only: bool
         ["Antes del remuestreo", f"Después — {info['algorithm'].upper()}"],
     ):
         bars = ax.bar(
-            [labels.get(k, k) for k in data],
+            [labels.get(k, str(k)) for k in data],
             data.values(),
             color=[_PALETTE.get(k, "#666") for k in data],
             edgecolor="white", linewidth=1.2,
