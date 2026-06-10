@@ -54,8 +54,8 @@ def render() -> None:
             help="Debe contener valores 0 (buen crédito) y 1 (impago).",
         )
     with col2:
-        st.metric("Columnas detectadas", df.shape[1])
-        st.metric("Candidatas binarias", len(candidates))
+        st.metric("Columnas detectadas", str(df.shape[1]))
+        st.metric("Candidatas binarias", str(len(candidates)))
 
     # ── Validar que la columna objetivo sea binaria ───────────────────────
     unique_vals = df[target_col].dropna().unique()

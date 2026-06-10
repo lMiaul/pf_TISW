@@ -70,7 +70,7 @@ def render() -> None:
         for cls, cnt in counts_before.items():
             label = "Buen crédito (0)" if cls == 0 else "Impago (1)"
             st.metric(label, f"{cnt:,}", delta=f"{cnt/total_before*100:.1f}%")
-        st.metric("Imbalance Ratio actual", dist["imbalance_ratio"])
+        st.metric("Imbalance Ratio actual", str(dist["imbalance_ratio"]))
 
     # ── Vista previa del balance resultante ───────────────────────────────
     st.divider()
@@ -144,8 +144,8 @@ def _show_distribution_preview(y_before, y_after, info: dict, preview_only: bool
     plt.close()
 
     c1, c2, c3 = st.columns(3)
-    c1.metric("IR antes",               info["ir_before"])
-    c2.metric("IR después",             info["ir_after"],
+    c1.metric("IR antes",               str(info["ir_before"]))
+    c2.metric("IR después",             str(info["ir_after"]),
               delta=f"{info['ir_after']-info['ir_before']:.3f}",
               delta_color="inverse")
     c3.metric("Δ muestras",             f"{info['samples_added']:+,}")

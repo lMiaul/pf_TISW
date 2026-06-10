@@ -28,20 +28,29 @@ def render() -> None:
     y          = df[target_col].astype(int)
     X          = df.drop(columns=[target_col])
 
+    # ── Separar variables categóricas y numéricas ───────────────────────────
+    num_cols = X.select_dtypes(include=[np.number]).columns.tolist()
+    cat_cols = X.select_dtypes(exclude=[np.number]).columns.tolist()
+
     # ── KPIs superiores ────────────────────────────────────────────────────
     dist = compute_class_distribution(y)
     ir   = dist["imbalance_ratio"]
 
     k1, k2, k3, k4 = st.columns(4)
     k1.metric("Total registros",        f"{len(df):,}")
-    k2.metric("Variables predictoras",  len(X.columns))
-    k3.metric("Imbalance Ratio (IR)",   ir,
+    k2.metric("Variables predictoras",  str(len(X.columns)))
+    k3.metric("Imbalance Ratio (IR)",   str(ir),
               delta=f"Desbalanceo {dist['level']}",
               delta_color="inverse")
     k4.metric("Nulos totales",
               f"{df.isnull().sum().sum():,}",
               delta=f"{df.isnull().mean().mean()*100:.1f}% del total",
               delta_color="inverse")
+
+    # ── Resumen de tipos de variables ──────────────────────────────────────
+    k5, k6 = st.columns(2)
+    k5.metric("Variables numéricas",    str(len(num_cols)))
+    k6.metric("Variables categóricas",  str(len(cat_cols)))
 
     # Advertencia IR severo (HU-02 criterio de borde)
     if ir > 10:
@@ -125,8 +134,8 @@ def _tab_class_distribution(y: pd.Series, dist: dict) -> None:
         for cls, cnt in counts.items():
             pct = cnt / total * 100
             st.metric(f"Clase {cls} — {labels.get(cls,'')}", f"{cnt:,}", delta=f"{pct:.1f}%")
-        st.metric("Imbalance Ratio", dist["imbalance_ratio"])
-        st.metric("Nivel de desbalanceo", dist["level"].capitalize())
+        st.metric("Imbalance Ratio", str(dist["imbalance_ratio"]))
+        st.metric("Nivel de desbalanceo", str(dist["level"]).capitalize())
 
 
 def _tab_numeric_features(X: pd.DataFrame, y: pd.Series) -> None:

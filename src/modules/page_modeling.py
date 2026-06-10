@@ -59,7 +59,7 @@ def render() -> None:
         st.metric("Técnica de remuestreo", resamp_label)
         st.metric("Muestras entrenamiento (balanceadas)", f"{len(X_train_res):,}")
         st.metric("Muestras test (originales)",           f"{len(X_test):,}")
-        st.metric("Variables predictoras",                len(X_test.columns))
+        st.metric("Variables predictoras",                str(len(X_test.columns)))
 
     # ── Entrenar ───────────────────────────────────────────────────────────
     st.divider()
