@@ -31,7 +31,8 @@ def render() -> None:
     # Binarizar target si no es numérico (e.g. 'good'/'bad')
     unique_vals = sorted(y_raw.dropna().unique(), key=str)
     if len(unique_vals) == 2 and not set(unique_vals).issubset({0, 1}):
-        y = y_raw.map({unique_vals[0]: 0, unique_vals[1]: 1}).astype(int)
+        counts = y_raw.value_counts()
+        y = y_raw.map({counts.idxmax(): 0, counts.idxmin(): 1}).astype(int)
     elif len(unique_vals) > 2:
         most_common = y_raw.value_counts().idxmax()
         y = (y_raw != most_common).astype(int)

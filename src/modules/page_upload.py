@@ -63,9 +63,14 @@ def render() -> None:
     if set(unique_vals).issubset({0, 1, "0", "1"}):
         st.info(f"✅ La columna **{target_col}** es binaria (0/1). Perfecta para clasificación.")
     elif n_unique == 2:
+        counts = df[target_col].value_counts()
+        majority_cls = counts.idxmax()
+        minority_cls = counts.idxmin()
         st.info(
-            f"✅ La columna **{target_col}** tiene 2 clases: `{sorted(unique_vals, key=str)}`. "
-            f"Se mapearán automáticamente a **0** (clase mayoritaria) y **1** (clase minoritaria)."
+            f"✅ La columna **{target_col}** tiene 2 clases. "
+            f"Se mapearán automáticamente: "
+            f"**`{majority_cls}`** ({counts[majority_cls]:,} registros, mayoritaria) → **0**, "
+            f"**`{minority_cls}`** ({counts[minority_cls]:,} registros, minoritaria) → **1**."
         )
     else:
         st.warning(

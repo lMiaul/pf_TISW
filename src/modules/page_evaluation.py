@@ -109,7 +109,7 @@ def _show_metrics_table(m_base: dict, m_opt: dict, delta: dict) -> None:
 
     styled = (
         df.drop(columns=["_delta"])
-        .style.applymap(_color_delta, subset=["Δ Mejora"])
+        .style.map(_color_delta, subset=["Δ Mejora"])
     )
     st.dataframe(styled, use_container_width=True, hide_index=True)
 

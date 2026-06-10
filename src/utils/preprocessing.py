@@ -45,8 +45,9 @@ def preprocess(
     # Binarizar target si no es 0/1
     unique_vals = sorted(y.dropna().unique(), key=str)
     if len(unique_vals) == 2 and not set(unique_vals).issubset({0, 1}):
-        # Mapear: primera clase alfabéticamente = 0, segunda = 1
-        mapping = {unique_vals[0]: 0, unique_vals[1]: 1}
+        # Mapear por frecuencia: clase mayoritaria = 0, minoritaria = 1
+        counts = y.value_counts()
+        mapping = {counts.idxmax(): 0, counts.idxmin(): 1}
         y = y.map(mapping)
     elif len(unique_vals) > 2:
         # Binarizar: clase más frecuente = 0, resto = 1
