@@ -59,10 +59,19 @@ def render() -> None:
 
     # ── Validar que la columna objetivo sea binaria ───────────────────────
     unique_vals = df[target_col].dropna().unique()
-    if not set(unique_vals).issubset({0, 1, "0", "1"}):
+    n_unique = len(unique_vals)
+    if set(unique_vals).issubset({0, 1, "0", "1"}):
+        st.info(f"✅ La columna **{target_col}** es binaria (0/1). Perfecta para clasificación.")
+    elif n_unique == 2:
+        st.info(
+            f"✅ La columna **{target_col}** tiene 2 clases: `{sorted(unique_vals, key=str)}`. "
+            f"Se mapearán automáticamente a **0** (clase mayoritaria) y **1** (clase minoritaria)."
+        )
+    else:
         st.warning(
-            f"La columna **{target_col}** tiene valores: {sorted(unique_vals)}. "
-            "Se esperan sólo 0 y 1. Verifica la selección."
+            f"La columna **{target_col}** tiene **{n_unique}** valores únicos: "
+            f"{sorted(unique_vals, key=str)[:10]}{'...' if n_unique > 10 else ''}. "
+            "Se binarizará automáticamente (clase más frecuente = 0, resto = 1)."
         )
 
     # ── Advertencia de nulos severos ──────────────────────────────────────

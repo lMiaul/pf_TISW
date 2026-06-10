@@ -14,11 +14,12 @@ RANDOM_STATE = 42
 
 
 def detect_target_candidates(df: pd.DataFrame) -> list[str]:
-    """Devuelve columnas binarias candidatas a ser la variable objetivo."""
+    """Devuelve columnas candidatas a ser la variable objetivo (binarias o con 2 clases)."""
     candidates = []
     for col in df.columns:
         unique_vals = df[col].dropna().unique()
-        if set(unique_vals).issubset({0, 1, "0", "1", True, False}):
+        # Acepta columnas binarias clásicas (0/1) o cualquier columna con exactamente 2 valores únicos
+        if set(unique_vals).issubset({0, 1, "0", "1", True, False}) or len(unique_vals) == 2:
             candidates.append(col)
     return candidates
 
@@ -37,9 +38,22 @@ def preprocess(
     """
     df = df.copy()
 
-    # 1. Separar target
-    y = df[target_col].astype(int)
+    # 1. Separar target y asegurar que sea binario (0/1)
+    y = df[target_col]
     X = df.drop(columns=[target_col])
+
+    # Binarizar target si no es 0/1
+    unique_vals = sorted(y.dropna().unique(), key=str)
+    if len(unique_vals) == 2 and not set(unique_vals).issubset({0, 1}):
+        # Mapear: primera clase alfabéticamente = 0, segunda = 1
+        mapping = {unique_vals[0]: 0, unique_vals[1]: 1}
+        y = y.map(mapping)
+    elif len(unique_vals) > 2:
+        # Binarizar: clase más frecuente = 0, resto = 1
+        most_common = y.value_counts().idxmax()
+        y = (y != most_common).astype(int)
+
+    y = y.astype(int)
 
     # 2. Imputar nulos
     num_cols = X.select_dtypes(include=[np.number]).columns.tolist()
@@ -57,11 +71,14 @@ def preprocess(
     feature_names = X.columns.tolist()
 
     # 4. Partición estratificada (mantiene proporción de clases)
+    min_class_count = y.value_counts().min()
+    use_stratify = min_class_count >= 2
+
     X_train, X_test, y_train, y_test = train_test_split(
         X, y,
         test_size=test_size,
         random_state=RANDOM_STATE,
-        stratify=y,
+        stratify=y if use_stratify else None,
     )
 
     # 5. Estandarización — scaler ajustado SOLO sobre train (anti-leakage)

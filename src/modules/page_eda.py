@@ -25,8 +25,18 @@ def render() -> None:
 
     df         = st.session_state["dataset_raw"]
     target_col = st.session_state["target_column"]
-    y          = df[target_col].astype(int)
+    y_raw      = df[target_col]
     X          = df.drop(columns=[target_col])
+
+    # Binarizar target si no es numérico (e.g. 'good'/'bad')
+    unique_vals = sorted(y_raw.dropna().unique(), key=str)
+    if len(unique_vals) == 2 and not set(unique_vals).issubset({0, 1}):
+        y = y_raw.map({unique_vals[0]: 0, unique_vals[1]: 1}).astype(int)
+    elif len(unique_vals) > 2:
+        most_common = y_raw.value_counts().idxmax()
+        y = (y_raw != most_common).astype(int)
+    else:
+        y = y_raw.astype(int)
 
     # ── Separar variables categóricas y numéricas ───────────────────────────
     num_cols = X.select_dtypes(include=[np.number]).columns.tolist()
