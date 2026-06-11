@@ -61,9 +61,14 @@ def preprocess(
     cat_cols = X.select_dtypes(exclude=[np.number]).columns.tolist()
 
     for col in num_cols:
-        X[col] = X[col].fillna(X[col].median())
+        fill_val = X[col].median()
+        if pd.isna(fill_val):
+            fill_val = 0.0
+        X[col] = X[col].fillna(fill_val)
     for col in cat_cols:
-        X[col] = X[col].fillna(X[col].mode()[0])
+        mode_series = X[col].mode()
+        fill_val = mode_series.iloc[0] if not mode_series.empty else "missing"
+        X[col] = X[col].fillna(fill_val)
 
     # 3. Codificación one-hot para categóricas
     if cat_cols:
