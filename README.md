@@ -18,6 +18,13 @@ el tratamiento del desbalance de clases mediante un **enfoque híbrido de remues
 
 ---
 
+## Documentación
+
+- [Manual de uso básico](./MANUAL_USO.md) — para usuarios finales (científico de datos / analista de riesgo)
+- Este README — para desarrolladores
+
+---
+
 ## Pipeline CRISP-DM implementado
 
 | Fase | Módulo | RF |
